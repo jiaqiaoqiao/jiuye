@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.EmployeesMapper" >
+  <resultMap id="BaseResultMap" type="com.dto.Employees" >
+    <id column="EMPLOYEE_ID" property="employeeId" jdbcType="DECIMAL" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="EMAIL" property="email" jdbcType="VARCHAR" />
+    <result column="PHONE_NUMBER" property="phoneNumber" jdbcType="VARCHAR" />
+    <result column="HIRE_DATE" property="hireDate" jdbcType="TIMESTAMP" />
+    <result column="JOB_ID" property="jobId" jdbcType="VARCHAR" />
+    <result column="SALARY" property="salary" jdbcType="DECIMAL" />
+    <result column="DEPARTMENT_ID" property="departmentId" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    EMPLOYEE_ID, NAME, EMAIL, PHONE_NUMBER, HIRE_DATE, JOB_ID, SALARY, DEPARTMENT_ID
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.dto.EmployeesExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from employees
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from employees
+    where EMPLOYEE_ID = #{employeeId,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from employees
+    where EMPLOYEE_ID = #{employeeId,jdbcType=DECIMAL}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dto.EmployeesExample" >
+    delete from employees
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dto.Employees" >
+    insert into employees (EMPLOYEE_ID, NAME, EMAIL, 
+      PHONE_NUMBER, HIRE_DATE, JOB_ID, 
+      SALARY, DEPARTMENT_ID)
+    values (#{employeeId,jdbcType=DECIMAL}, #{name,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{phoneNumber,jdbcType=VARCHAR}, #{hireDate,jdbcType=TIMESTAMP}, #{jobId,jdbcType=VARCHAR}, 
+      #{salary,jdbcType=DECIMAL}, #{departmentId,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dto.Employees" >
+    insert into employees
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="employeeId != null" >
+        EMPLOYEE_ID,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="email != null" >
+        EMAIL,
+      </if>
+      <if test="phoneNumber != null" >
+        PHONE_NUMBER,
+      </if>
+      <if test="hireDate != null" >
+        HIRE_DATE,
+      </if>
+      <if test="jobId != null" >
+        JOB_ID,
+      </if>
+      <if test="salary != null" >
+        SALARY,
+      </if>
+      <if test="departmentId != null" >
+        DEPARTMENT_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="employeeId != null" >
+        #{employeeId,jdbcType=DECIMAL},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNumber != null" >
+        #{phoneNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="hireDate != null" >
+        #{hireDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jobId != null" >
+        #{jobId,jdbcType=VARCHAR},
+      </if>
+      <if test="salary != null" >
+        #{salary,jdbcType=DECIMAL},
+      </if>
+      <if test="departmentId != null" >
+        #{departmentId,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dto.EmployeesExample" resultType="java.lang.Integer" >
+    select count(*) from employees
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update employees
+    <set >
+      <if test="record.employeeId != null" >
+        EMPLOYEE_ID = #{record.employeeId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.name != null" >
+        NAME = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email != null" >
+        EMAIL = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phoneNumber != null" >
+        PHONE_NUMBER = #{record.phoneNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hireDate != null" >
+        HIRE_DATE = #{record.hireDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.jobId != null" >
+        JOB_ID = #{record.jobId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.salary != null" >
+        SALARY = #{record.salary,jdbcType=DECIMAL},
+      </if>
+      <if test="record.departmentId != null" >
+        DEPARTMENT_ID = #{record.departmentId,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update employees
+    set EMPLOYEE_ID = #{record.employeeId,jdbcType=DECIMAL},
+      NAME = #{record.name,jdbcType=VARCHAR},
+      EMAIL = #{record.email,jdbcType=VARCHAR},
+      PHONE_NUMBER = #{record.phoneNumber,jdbcType=VARCHAR},
+      HIRE_DATE = #{record.hireDate,jdbcType=TIMESTAMP},
+      JOB_ID = #{record.jobId,jdbcType=VARCHAR},
+      SALARY = #{record.salary,jdbcType=DECIMAL},
+      DEPARTMENT_ID = #{record.departmentId,jdbcType=DECIMAL}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dto.Employees" >
+    update employees
+    <set >
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        EMAIL = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNumber != null" >
+        PHONE_NUMBER = #{phoneNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="hireDate != null" >
+        HIRE_DATE = #{hireDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jobId != null" >
+        JOB_ID = #{jobId,jdbcType=VARCHAR},
+      </if>
+      <if test="salary != null" >
+        SALARY = #{salary,jdbcType=DECIMAL},
+      </if>
+      <if test="departmentId != null" >
+        DEPARTMENT_ID = #{departmentId,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where EMPLOYEE_ID = #{employeeId,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dto.Employees" >
+    update employees
+    set NAME = #{name,jdbcType=VARCHAR},
+      EMAIL = #{email,jdbcType=VARCHAR},
+      PHONE_NUMBER = #{phoneNumber,jdbcType=VARCHAR},
+      HIRE_DATE = #{hireDate,jdbcType=TIMESTAMP},
+      JOB_ID = #{jobId,jdbcType=VARCHAR},
+      SALARY = #{salary,jdbcType=DECIMAL},
+      DEPARTMENT_ID = #{departmentId,jdbcType=DECIMAL}
+    where EMPLOYEE_ID = #{employeeId,jdbcType=DECIMAL}
+  </update>
+  <select id="employeeList" resultMap="BaseResultMap">
+    select e.*,d.DEPARTMENT_NAME departmentName,l.STREET_ADDRESS streetAddress,c.COUNTRY_NAME countryName from employees e LEFT JOIN departments d ON e.DEPARTMENT_ID=d.DEPARTMENT_ID
+    LEFT JOIN locations l ON d.LOCATION_ID=l.LOCATION_ID
+    LEFT JOIN countries c ON l.COUNTRY_ID=c.COUNTRY_ID
+    <where>
+      <if test="employeeName!=null and employeeName!=''">
+        and e.name like concat('%',#{employeeName},'%')
+      </if>
+      <!--入職日期比較 -->
+      <if test="(startDate!=null and startDate!='') and (endDate==null or endDate=='')">
+        and e.HIRE_DATE &gt; #{startDate}
+      </if>
+      <if test="(startDate==null or startDate=='') and (endDate!=null and endDate!='')">
+        and e.HIRE_DATE &lt; #{endDate}
+      </if>
+      <if test="(startDate!=null and startDate!='') and (endDate!=null and endDate!='')">
+        and e.HIRE_DATE between #{startDate} and #{endDate}
+      </if>
+      <!-- 薪資-->
+      <if test="compareS==0 and salary!=null and salary!=''">
+        and e.SALARY &lt; #{salary}
+      </if>
+      <if test="compareS==1 and salary!=null and salary!=''">
+        and e.SALARY = #{salary}
+      </if>
+      <if test="compareS==2 and salary!=null and salary!=''">
+        and e.SALARY &gt; #{salary}
+      </if>
+      <!-- 部门-->
+      <if test="departmentId!=null and departmentId!=''">
+        and e.DEPARTMENT_ID = #{departmentId}
+      </if>
+    </where>
+  </select>
+  <select id="getde" resultType="map">
+      SELECT COUNT(d.DEPARTMENT_NAME) value , d.DEPARTMENT_NAME name  from departments d LEFT JOIN employees e on d.DEPARTMENT_ID=e.DEPARTMENT_ID GROUP BY d.DEPARTMENT_NAME
+  </select>
+</mapper>
